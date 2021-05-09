@@ -6,44 +6,21 @@ const appSlice = createSlice({
 	initialState: {
 		loading: false,
 		error: false,
-		products: [],
-		product: null,
-		categories: [],
-		category: null,
-		cart: []
+		user : null,
+		tokens: {}
 	},
 	reducers: {
-		
 		error(state, action) {
 			state.error = action.payload.error;
 			state.loading = false;
 		},
-		getProducts() {},
-		setProducts(state, action) {
-			state.products = action.payload.data;
+		login(){},
+		setUser(state,action){
+			state.user = action.payload;
 		},
-		getProduct() {},
-		setProduct(state, action) {
-			state.product = action.payload.data;
-		},
-		getCategories() {},
-		setCategories(state, action) {
-			state.categories = action.payload.data;
-		},
-		getCategory() {},
-		setCategory(state, action) {
-			state.category = action.payload.data;
-		},
-		resetCart(state){
-			state.cart = [];
-		},
-		addToCart(state, action){
-			state.cart.push(action.payload);
-		},
-		removeFromCart(state, action){
-			state.cart = state.cart.filter(product => product.id !== action.payload.id);
-		},
-		confirmPurchase(){}
+		setTokens(state,action){
+			state.tokens = action.payload;
+		}
 	},
 });
 

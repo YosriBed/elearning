@@ -3,58 +3,38 @@ import {
 } from 'redux-saga/effects';
 
 import {actions} from './slice';
+import history from './utils/history';
 
 const api = (url, method,body) => {
+	// eslint-disable-next-line no-undef
 	const baseApiUrl = process.env.REACT_APP_API_SERVER || 'http://localhost:8080';
 	return fetch(`${baseApiUrl}${url}`,
 		{
 			method,
 			body,
 			headers: {
-				'Content-Type': 'application/json'
+				'Content-Type': 'application/json',
+				'access-control-allow-origin' : '*',
 			}
 		}).then(res => res.json())
 		.then(data => (data))
 		.catch(err => (err));
 };
-function* fetchProducts() {
+function* login({payload: {body}}){
 	try {
-		const products = yield call(api, '/api/drugs');
-		yield put(actions.setProducts(products));
-	} catch (e) {
-		yield put(actions.error(e));
+		const response = yield call(api, '/api/auth/login','POST',JSON.stringify(body));
+		yield put(actions.setUser(response.user));
+		yield put(actions.setTokens(response.tokens));
+		history.push('/');
+	} catch (error) {
+		yield put(actions.error(error));
 	}
 }
-function* fetchProduct({payload: {id}}) {
-	try {
-		const products = yield call(api, `/api/drugs/${id}`);
-		yield put(actions.setProduct(products));
-	} catch (e) {
-		yield put(actions.error(e));
-	}
-}
-function* fetchCategories() {
-	try {
-		const categories = yield call(api, '/api/categories');
-		yield put(actions.setCategories(categories));
-	} catch (e) {
-		yield put(actions.error(e));
-	}
-}
-function* fetchCategory({payload: {id}}) {
-	try {
-		const category = yield call(api, `/api/categories/${id}`);
-		yield put(actions.setCategory(category));
-	} catch (e) {
-		yield put(actions.error(e));
-	}
-}
+
 function* saga() {
 	yield all([
-		takeLatest(actions.getProducts.type, fetchProducts),
-		takeLatest(actions.getProduct.type, fetchProduct),
-		takeLatest(actions.getCategories.type, fetchCategories),
-		takeLatest(actions.getCategory.type, fetchCategory)
+		takeLatest(actions.login.type, login),
+		
 	]);
 }
   

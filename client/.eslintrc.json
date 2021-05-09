@@ -13,11 +13,9 @@
   },
   "plugins": ["react"],
   "rules": {
-    "indent": "off",
-    "linebreak-style": ["error", "unix"],
     "quotes": ["error", "single"],
     "semi": ["error", "always"],
-    "no-undef": "off",
-    "no-unused-vars": "off"
+    "no-undef": "warn",
+    "no-unused-vars": "warn"
   }
 }

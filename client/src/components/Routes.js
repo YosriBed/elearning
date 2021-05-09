@@ -1,19 +1,28 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Router, Route, Switch } from 'react-router-dom';
 
 import loadable from '@loadable/component';
 import Layout from './Layout';
 import Loading from '../containers/Loading';
+import history from '../utils/history';
 
 const Home = loadable(() => import('../containers/Home'), {
   fallback: <Loading />,
 });
-
+const Authentication = loadable(() => import('../containers/Authentication'), {
+  fallback: <Loading />,
+});
+const Onboarding = loadable(() => import('../containers/Onboarding'), {
+  fallback: <Loading />,
+});
 const Routes = () => (
   <Router history={history}>
     <Layout>
       <Switch>
         <Route exact path="/" component={Home} />
+        <Route exact path="/auth/:role" component={Authentication} />
+        <Route exact path="/onboarding/:role" component={Onboarding} />
+        <Route path="*" component={Home}/>
       </Switch>
     </Layout>
   </Router>

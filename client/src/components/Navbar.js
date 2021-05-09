@@ -1,9 +1,8 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 
 const Navbar = () => {
-  const cartLength = useSelector((state) => state.cart).length;
+  const user = useSelector(state => state.user);
   return (
     <header className="text-gray-400 bg-gray-900 body-font">
       <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
@@ -22,7 +21,7 @@ const Navbar = () => {
           </svg>
           <span className="ml-3 text-xl">Elearning</span>
         </a>
-        <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center"></nav>
+        <nav className="h-10 md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center"></nav>
       </div>
     </header>
   );
