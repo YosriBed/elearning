@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Api server for the elearning web app",
   "main": "index.js",
+  "engines": {
+    "node": ">=12.0.0"
+  },
   "scripts": {
     "start": "nodemon index.js",
     "test": "jest -i --coverage",
@@ -11,18 +14,28 @@
     "eslint:fix": "node_modules/.bin/eslint . --fix"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
     "dotenv": "^6.2.0",
     "express": "^4.16.4",
+    "express-mongo-sanitize": "^2.0.2",
     "express-rate-limit": "^5.2.6",
     "helmet": "^4.5.0",
     "http-status": "^1.5.0",
     "joi": "^17.4.0",
+    "jsonwebtoken": "^8.5.1",
+    "moment": "^2.29.1",
+    "mongoose": "^5.12.7",
+    "nodemailer": "^6.6.0",
     "nodemon": "^2.0.7",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
-    "winston": "^3.3.3"
+    "swagger-jsdoc": "^6.0.0",
+    "swagger-ui-express": "^4.1.6",
+    "validator": "^13.6.0",
+    "winston": "^3.3.3",
+    "xss-clean": "^0.1.1"
   },
   "devDependencies": {
     "@types/jest": "^26.0.22",
