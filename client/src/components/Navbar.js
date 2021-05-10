@@ -1,8 +1,14 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { actions } from '../slice';
 const Navbar = () => {
-  const user = useSelector(state => state.user);
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
+  const logout = () => {
+    dispatch(actions.logout());
+  };
   return (
     <header className="text-gray-400 bg-gray-900 body-font">
       <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
@@ -21,7 +27,26 @@ const Navbar = () => {
           </svg>
           <span className="ml-3 text-xl">Elearning</span>
         </a>
-        <nav className="h-10 md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center"></nav>
+        {user && (
+          <>
+        <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center">
+          <Link to="/" className="mr-5 hover:text-white">
+            Home
+          </Link>
+          <Link to="/courses" className="mr-5 hover:text-white">
+            Courses
+          </Link>
+        </nav>
+        <button
+          onClick={() => {
+            logout();
+          }}
+          className="inline-flex items-center text-white bg-blue-500 border-0 py-1 px-3 focus:outline-none hover:bg-gray-700 rounded text-base mt-4 md:mt-0"
+        >
+          Logout
+        </button>
+        </>
+        )}
       </div>
     </header>
   );
