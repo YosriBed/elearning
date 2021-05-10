@@ -3,6 +3,19 @@ const { toJSON, paginate } = require('./plugins');
 
 const courseSchema = mongoose.Schema(
   {
+    title: {
+      type: String,
+    },
+    description: {
+      type: String,
+    },
+    resources: [
+      {
+        filename: { type: String },
+        mimetype: { type: String },
+        size: { type: Number },
+      },
+    ],
     questions: [
       {
         question: { type: mongoose.Schema.Types.ObjectId, ref: 'Question' },
@@ -20,6 +33,7 @@ const courseSchema = mongoose.Schema(
       enum: ['Private', 'Public'],
       default: 'Private',
     },
+    teacher: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 
   },
   {
