@@ -2,7 +2,7 @@ const httpStatus = require('http-status');
 const pick = require('../utils/pick');
 const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
-const { userService } = require('../services');
+const { userService, courseService } = require('../services');
 
 const createUser = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
@@ -34,10 +34,37 @@ const deleteUser = catchAsync(async (req, res) => {
   res.status(httpStatus.NO_CONTENT).send();
 });
 
+const getHomepage = catchAsync(async (req, res) => {
+  const { _id: userId, role } = req.user;
+  let home = {};
+  let teacherCourses;
+  let studentCourses;
+  switch (role) {
+    case 'teacher':
+      teacherCourses = await courseService.getAllCourses({ teacher: userId });
+      home = {
+        coursesCount: teacherCourses.length,
+        studentsCount: teacherCourses.map((course) => course.students.length).reduce((a, b) => a + b, 0),
+        resourcesCount: teacherCourses.map((course) => course.resources.length).reduce((a, b) => a + b, 0),
+        questionsCount: teacherCourses.map((course) => course.questions.length).reduce((a, b) => a + b, 0),
+      };
+      break;
+    case 'student':
+      studentCourses = await courseService.getAllCourses({ 'students.user': userId });
+      home = {
+        studentCourses,
+      };
+      break;
+    default:
+      throw new ApiError(httpStatus.UNAUTHORIZED, 'Unauthorized');
+  }
+  res.send(home);
+});
 module.exports = {
   createUser,
   getUsers,
   getUser,
   updateUser,
   deleteUser,
+  getHomepage,
 };

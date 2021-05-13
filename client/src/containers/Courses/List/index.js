@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { actions } from '../../../slice';
-import ListCard from '../components/ListCard';
+import ListCard from '../../../components/Courses/List';
 
 const index = () => {
   const dispatch = useDispatch();
@@ -32,9 +32,7 @@ const index = () => {
             </Link>
           )}
         </div>
-        <div className="flex flex-wrap -m-4">
-          <ListCard />
-        </div>
+        <ListCard courses={courses} />
       </div>
     </section>
   );

@@ -84,17 +84,51 @@ function* createCourse({ payload: { body } }) {
       Authorization: `Bearer ${token}`,
       'access-control-allow-origin': '*',
     });
-    history.push(`/courses/overview/${response.id}`);
+    history.push(`/courses/overview/${response.slug}`);
   } catch (error) {
     yield put(actions.error(error));
   }
 }
+
+function* getCourse({ payload: { slug } }) {
+  try {
+    const token = yield select(accessTokenSelector);
+    const response = yield call(api, `/api/courses/${slug}`, 'GET', token);
+    yield put(actions.setCourse(response));
+  } catch (error) {
+    yield put(actions.error(error));
+  }
+}
+
+function* getHomepage() {
+  try {
+    const token = yield select(accessTokenSelector);
+    const response = yield call(api, '/api/home', 'GET', token);
+    yield put(actions.setHomepage(response));
+  } catch (error) {
+    yield put(actions.error(error));
+  }
+}
+
+function* joinCourse({ payload: { slug } }) {
+  try {
+    const token = yield select(accessTokenSelector);
+    const response = yield call(api, `/api/courses/join/${slug}`, 'GET', token);
+    yield put(actions.setCourse(response));
+  } catch (error) {
+    yield put(actions.error(error));
+  }
+}
+
 function* saga() {
   yield all([
     takeLatest(actions.login.type, login),
     takeLatest(actions.logout.type, logout),
     takeLatest(actions.getCourses.type, getCourses),
     takeLatest(actions.createCourse.type, createCourse),
+    takeLatest(actions.getCourse.type, getCourse),
+    takeLatest(actions.getHomepage.type, getHomepage),
+    takeLatest(actions.joinCourse.type, joinCourse),
   ]);
 }
 

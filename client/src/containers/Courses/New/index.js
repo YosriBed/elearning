@@ -25,8 +25,12 @@ const index = () => {
     },
     validationSchema: CourseSchema,
     onSubmit: (values) => {
-      values.questions = questions;
-      values.resources = files;
+      if (questions.length > 0) {
+        values.questions = questions;
+      }
+      if (files && files.length > 0) {
+        values.resources = files;
+      }
       dispatch(actions.createCourse({ body: values }));
     },
   });

@@ -5,6 +5,7 @@ import loadable from '@loadable/component';
 import Layout from './Layout';
 import Loading from '../containers/Loading';
 import history from '../utils/history';
+import RestrictedRoute from './RestrictedRoute';
 
 const Home = loadable(() => import('../containers/Home'), {
   fallback: <Loading />,
@@ -26,7 +27,11 @@ const Routes = () => (
         <Route exact path="/" component={Home} />
         <Route exact path="/auth/:role" component={Authentication} />
         <Route exact path="/onboarding/:role" component={Onboarding} />
-        <Route path="/courses" component={Courses} />
+        <RestrictedRoute
+          path="/courses"
+          component={Courses}
+          requiredRoles={['teacher', 'student']}
+        />
         <Route path="*" component={Home} />
       </Switch>
     </Layout>

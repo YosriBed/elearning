@@ -2,15 +2,27 @@ const express = require('express');
 const auth = require('../middlewares/auth');
 const { courseController } = require('../controllers');
 const { upload } = require('../config/storage');
+const validate = require('../middlewares/validate');
+const { courseValidation } = require('../validation');
 
 const router = express.Router();
 
 router
   .route('/')
-  .post(auth('manageCourses'), upload.array('resources'), courseController.createCourse)
-  .get(auth('viewCourses'), courseController.getMyCourses);
+  .post(auth('manageCourses'), upload.any(), courseController.createCourse)
+  .get(auth('viewCourses'), courseController.getAllCourses);
 
-router.get('/all');
+router
+  .route('/:slug')
+  .get(auth('viewCourses'), validate(courseValidation.getCourseBySlug), courseController.getCourseBySlug);
+
+router
+  .route('/resources/:resourceId')
+  .get(courseController.downloadResource);
+
+router
+  .route('/join/:slug')
+  .get(auth('joinCourse'), courseController.joinCourse);
 
 module.exports = router;
 

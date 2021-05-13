@@ -9,6 +9,8 @@ const appSlice = createSlice({
     user: null,
     tokens: {},
     courses: null,
+    course: null,
+    homepage: null,
   },
   reducers: {
     error(state, action) {
@@ -32,6 +34,16 @@ const appSlice = createSlice({
       state.tokens = null;
     },
     createCourse() {},
+    getCourse() {},
+    setCourse(state, action) {
+      state.course = action.payload;
+    },
+    getHomepage() {},
+    setHomepage(state, action) {
+      state.homepage = action.payload;
+    },
+    joinCourse() {},
+    getMyCourses() {},
   },
 });
 

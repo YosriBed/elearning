@@ -1,40 +1,43 @@
 const Course = require('../models/course.model');
 
 /**
- * Get courses by student id
- * @param {ObjectId} studentId
- * @returns {Promise<Course>}
- */
-const getCoursesByStudentId = async (studentId) => Course.find({ 'students.user': studentId }).populate('students.progress').populate('teacher');
-
-/**
- * Get courses by teacher id
- * @param {ObjectId} teacherId
- * @returns {Promise<Course>}
- */
-const getCoursesByTeacherId = async (teacherId) => Course.find({ teacher: teacherId });
-
-/**
  * Query for courses
- * @param {Object} filter - Mongo filter
- * @param {Object} options - Query options
- * @param {string} [options.sortBy] - Sort option in the format: sortField:(desc|asc)
- * @param {number} [options.limit] - Maximum number of results per page (default = 10)
- * @param {number} [options.page] - Current page (default = 1)
- * @returns {Promise<QueryResult>}
+ * @returns {Promise<Course>}
  */
-const queryCourses = async (filter, options) => Course.paginate(filter, options).populate('teacher');
+const getAllCourses = async (filter = {}) => Course.find(filter)
+  .populate('teacher');
 
 /**
  * Create a course
  * @param {Object} courseBody
- * @returns
+ * @returns {Promise<Course>}
  */
-const createCourse = async (courseBody) => (Course.create(courseBody));
+const createCourse = async (courseBody) => Course.create(courseBody);
+
+/**
+ * Get a course
+ * @param {Object} filter
+ * @returns {Promise<Course>}
+ */
+const getCourse = async (filter) => Course.findOne(filter)
+  .populate('questions')
+  .populate('teacher')
+  .populate('students.user');
+
+/**
+ * Update a course
+ * @param {Object} filter
+ * @param {Object} update
+ * @returns {Promise<Course>}
+ */
+const updateCourse = async (filter, update) => Course.findOneAndUpdate(filter, update, { $new: true })
+  .populate('questions')
+  .populate('teacher')
+  .populate('students.user');
 
 module.exports = {
-  queryCourses,
+  getAllCourses,
   createCourse,
-  getCoursesByStudentId,
-  getCoursesByTeacherId,
+  getCourse,
+  updateCourse,
 };

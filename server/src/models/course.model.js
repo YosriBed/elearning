@@ -1,13 +1,23 @@
 const mongoose = require('mongoose');
 const { toJSON, paginate } = require('./plugins');
+const slugify = require('../utils/slugify');
 
 const courseSchema = mongoose.Schema(
   {
     title: {
       type: String,
+      required: true,
     },
     description: {
       type: String,
+      required: true,
+    },
+    slug: {
+      type: String,
+      default() {
+        return slugify(this.title);
+      },
+      index: true,
     },
     resources: [
       {
@@ -16,12 +26,7 @@ const courseSchema = mongoose.Schema(
         size: { type: Number },
       },
     ],
-    questions: [
-      {
-        question: { type: mongoose.Schema.Types.ObjectId, ref: 'Question' },
-        order: { type: Number },
-      },
-    ],
+    questions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Question' }],
     students: [
       {
         user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },

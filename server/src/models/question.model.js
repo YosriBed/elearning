@@ -3,16 +3,20 @@ const { toJSON, paginate } = require('./plugins');
 
 const questionSchema = mongoose.Schema(
   {
-    type: {
-      type: String,
-      enum: ['MCQ', 'Input'],
-    },
-    text: {
+    title: {
       type: String,
       required: true,
     },
-    options: [{ type: String }],
-    inputs: [{ type: String }],
+    content: {
+      type: String,
+      required: true,
+    },
+    type: {
+      type: String,
+      enum: ['MCQ', 'Input'],
+      required: true,
+    },
+    choices: [{ type: String }],
     expectedAnswer: [{ type: String }],
   },
   {
