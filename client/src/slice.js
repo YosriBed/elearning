@@ -26,11 +26,12 @@ const appSlice = createSlice({
     setCourses(state, action) {
       state.courses = action.payload;
     },
-    logout(){},
-    clearUserSession(state){
+    logout() {},
+    clearUserSession(state) {
       state.user = null;
       state.tokens = null;
-    }
+    },
+    createCourse() {},
   },
 });
 

@@ -15,6 +15,10 @@ const Authentication = loadable(() => import('../containers/Authentication'), {
 const Onboarding = loadable(() => import('../containers/Onboarding'), {
   fallback: <Loading />,
 });
+const Courses = loadable(() => import('../containers/Courses'), {
+  fallback: <Loading />,
+});
+
 const Routes = () => (
   <Router history={history}>
     <Layout>
@@ -22,7 +26,8 @@ const Routes = () => (
         <Route exact path="/" component={Home} />
         <Route exact path="/auth/:role" component={Authentication} />
         <Route exact path="/onboarding/:role" component={Onboarding} />
-        <Route path="*" component={Home}/>
+        <Route path="/courses" component={Courses} />
+        <Route path="*" component={Home} />
       </Switch>
     </Layout>
   </Router>

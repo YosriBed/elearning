@@ -1,8 +1,6 @@
 import React from 'react';
 const index = () => {
-    return (
-        <p>Admin homepage</p>
-    );
+  return <p>Admin homepage</p>;
 };
 
 export default index;

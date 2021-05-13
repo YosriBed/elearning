@@ -1,7 +1,7 @@
 import React from 'react';
 import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
-import {actions} from '../../../slice';
+import { actions } from '../../../slice';
 
 const index = ({ role }) => {
   const dispatch = useDispatch();
@@ -11,7 +11,7 @@ const index = ({ role }) => {
       password: '',
     },
     onSubmit: (values) => {
-      dispatch(actions.login({body: {...values, role} }));
+      dispatch(actions.login({ body: { ...values, role } }));
     },
   });
 

@@ -1,24 +1,30 @@
 import { call, put, takeLatest, all, select } from 'redux-saga/effects';
 
 import { actions } from './slice';
+import { jsonToFormData } from './utils/helpers';
 import history from './utils/history';
 
 const accessTokenSelector = (state) => state.tokens?.access?.token;
 const refreshTokenSelector = (state) => state.tokens?.refresh.token;
 
-const api = (url, method, token, body) => {
-  // eslint-disable-next-line no-undef
+const api = (
+  url,
+  method,
+  token,
+  body,
+  headers = {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${token}`,
+    'access-control-allow-origin': '*',
+  }
+) => {
   const baseApiUrl =
     process.env.REACT_APP_API_SERVER || 'http://localhost:8080';
 
   return fetch(`${baseApiUrl}${url}`, {
     method,
     body,
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-      'access-control-allow-origin': '*',
-    },
+    headers,
   })
     .then((res) => res.json())
     .then((data) => data)
@@ -63,7 +69,6 @@ function* logout() {
 function* getCourses() {
   try {
     const token = yield select(accessTokenSelector);
-    console.log(token);
     const response = yield call(api, '/api/courses', 'GET', token);
     yield put(actions.setCourses(response));
   } catch (error) {
@@ -71,11 +76,25 @@ function* getCourses() {
   }
 }
 
+function* createCourse({ payload: { body } }) {
+  try {
+    const token = yield select(accessTokenSelector);
+    const data = jsonToFormData(body);
+    const response = yield call(api, '/api/courses', 'POST', token, data, {
+      Authorization: `Bearer ${token}`,
+      'access-control-allow-origin': '*',
+    });
+    history.push(`/courses/overview/${response.id}`);
+  } catch (error) {
+    yield put(actions.error(error));
+  }
+}
 function* saga() {
   yield all([
     takeLatest(actions.login.type, login),
     takeLatest(actions.logout.type, logout),
     takeLatest(actions.getCourses.type, getCourses),
+    takeLatest(actions.createCourse.type, createCourse),
   ]);
 }
 
