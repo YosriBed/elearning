@@ -1,5 +1,7 @@
 {
-  "name": "drugstore-front",
+  "name": "elearning-front",
+  "description": "A basic eLearning demo app",
+  "author": {"email": "yosri_pro@outlook.fr","name": "Yosri Bedoui", "url": "https://github.com/yosarouto"},
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -7,7 +9,6 @@
     "@craco/craco": "^6.1.1",
     "@loadable/component": "^5.14.1",
     "@reduxjs/toolkit": "^1.5.1",
-    "bootstrap": "^4.6.0",
     "formik": "^2.2.6",
     "history": "^4.10.1",
     "nanoid": "^3.1.23",
