@@ -19,7 +19,7 @@ const createCourse = async (courseBody) => Course.create(courseBody);
  * @param {Object} filter
  * @returns {Promise<Course>}
  */
-const getCourse = async (filter) => Course.findOne(filter)
+const getCourse = async (filter = {}) => Course.findOne(filter)
   .populate('questions')
   .populate('teacher')
   .populate('students.user');
@@ -35,9 +35,17 @@ const updateCourse = async (filter, update) => Course.findOneAndUpdate(filter, u
   .populate('teacher')
   .populate('students.user');
 
+/**
+   * Returns number of documents matching filter
+   * @param {Object} filter
+   * @returns {Number}
+   */
+const countCourses = async (filter = {}) => Course.countDocuments(filter);
+
 module.exports = {
   getAllCourses,
   createCourse,
   getCourse,
   updateCourse,
+  countCourses,
 };

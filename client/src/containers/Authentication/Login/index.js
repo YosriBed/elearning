@@ -16,7 +16,7 @@ const index = ({ role }) => {
   });
 
   return (
-    <div className="bg-gray-900 shadow-md rounded-lg p-8 flex flex-col md:ml-auto w-full mt-10 md:mt-0 relative z-10">
+    <div className="bg-gray-900 rounded-lg p-8 flex flex-col md:ml-auto w-full mt-10 md:mt-0 relative z-10">
       <form onSubmit={handleSubmit}>
         <div className="relative mb-4">
           <label htmlFor="email" className="leading-7 text-sm text-gray-400">

@@ -1,4 +1,6 @@
 const httpStatus = require('http-status');
+const fs = require('fs');
+const path = require('path');
 const pick = require('../utils/pick');
 const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
@@ -10,7 +12,17 @@ const createUser = catchAsync(async (req, res) => {
 });
 
 const getUsers = catchAsync(async (req, res) => {
-  const filter = pick(req.query, ['name', 'role']);
+  let filter = {};
+  if (req.query.search) {
+    const searchInput = req.query.search;
+    filter = {
+      $or: [
+        { name: { $regex: searchInput, $options: 'i' } },
+        { role: { $regex: searchInput, $options: 'i' } },
+        { email: { $regex: searchInput, $options: 'i' } },
+      ],
+    };
+  }
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const result = await userService.queryUsers(filter, options);
   res.send(result);
@@ -53,6 +65,14 @@ const getHomepage = catchAsync(async (req, res) => {
       studentCourses = await courseService.getAllCourses({ 'students.user': userId });
       home = {
         studentCourses,
+      };
+      break;
+    case 'admin':
+      home = {
+        coursesCount: await courseService.countCourses({}),
+        studentsCount: await userService.countUsers({ role: 'student' }),
+        teachersCount: await userService.countUsers({ role: 'teacher' }),
+        resourcesCount: fs.readdirSync(path.resolve(process.cwd(), 'src/uploads')).length - 1,
       };
       break;
     default:

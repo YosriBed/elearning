@@ -84,6 +84,13 @@ const deleteUserById = async (userId) => {
   return user;
 };
 
+/**
+   * Returns number of documents matching filter
+   * @param {Object} filter
+   * @returns {Number}
+   */
+const countUsers = async (filter = {}) => User.countDocuments(filter);
+
 module.exports = {
   createUser,
   queryUsers,
@@ -92,4 +99,5 @@ module.exports = {
   getUserByEmailAndRole,
   updateUserById,
   deleteUserById,
+  countUsers,
 };

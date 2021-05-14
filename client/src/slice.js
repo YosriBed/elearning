@@ -7,6 +7,7 @@ const appSlice = createSlice({
     loading: false,
     error: false,
     user: null,
+    users: null,
     tokens: {},
     courses: null,
     course: null,
@@ -44,6 +45,11 @@ const appSlice = createSlice({
     },
     joinCourse() {},
     getMyCourses() {},
+    getUsers() {},
+    setUsers(state, action) {
+      state.users = action.payload;
+    },
+    register() {},
   },
 });
 

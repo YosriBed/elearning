@@ -6,7 +6,6 @@ import { actions } from '../../../../slice';
 const Details = ({ course }) => {
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  console.log(course);
 
   const joinCourse = () => {
     dispatch(actions.joinCourse({ slug: course.slug }));
@@ -47,26 +46,29 @@ const Details = ({ course }) => {
           </div>
           <div className="sm:w-2/3 sm:pl-8 sm:py-8 sm:border-l border-gray-800 sm:border-t-0 border-t mt-4 pt-4 sm:mt-0 text-center sm:text-left">
             <p className="leading-relaxed text-lg mb-4">{course.description}</p>
-            {user.role === 'student' &&
-            course.students &&
-            course.students
-              .map((item) => item.user)
-              .findIndex(
-                (user) => user.id.toString() === user.id.toString()
-              ) ? (
-              <div className="text-purple-400 inline-flex items-center px-2 py-8">
-                <button
-                  type="button"
-                  className="ml-1 h-10 w-32 bg-green-600 rounded text-white hover:bg-green-800"
-                  onClick={joinCourse}
-                >
-                  Join
-                </button>
-              </div>
+            {user.role === 'student' ? (
+              course.students &&
+              course.students
+                .map((item) => item.user)
+                .findIndex(
+                  (user) => user.id.toString() === user.id.toString()
+                ) ? (
+                <div className="text-purple-400 inline-flex items-center px-2 py-8">
+                  <button
+                    type="button"
+                    className="ml-1 h-10 w-32 bg-green-600 rounded text-white hover:bg-green-800"
+                    onClick={joinCourse}
+                  >
+                    Join
+                  </button>
+                </div>
+              ) : (
+                <div className="text-green-400 inline-flex items-center px-2 py-8">
+                  You have already Joined
+                </div>
+              )
             ) : (
-              <div className="text-green-400 inline-flex items-center px-2 py-8">
-                You have already Joined
-              </div>
+              <div />
             )}
           </div>
         </div>

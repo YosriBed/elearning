@@ -49,6 +49,24 @@ function* login({ payload: { body } }) {
   }
 }
 
+function* register({ payload: { body } }) {
+  try {
+    const token = yield select(accessTokenSelector);
+    const response = yield call(
+      api,
+      '/api/auth/register',
+      'POST',
+      token,
+      JSON.stringify(body)
+    );
+    yield put(actions.setUser(response.user));
+    yield put(actions.setTokens(response.tokens));
+    history.push('/');
+  } catch (error) {
+    yield put(actions.error(error));
+  }
+}
+
 function* logout() {
   try {
     const token = yield select(refreshTokenSelector);
@@ -120,15 +138,31 @@ function* joinCourse({ payload: { slug } }) {
   }
 }
 
+function* getUsers({ payload }) {
+  try {
+    const token = yield select(accessTokenSelector);
+    Object.keys(payload).forEach(
+      (k) => !payload[k] && payload[k] !== undefined && delete payload[k]
+    );
+    const query = new URLSearchParams(payload).toString();
+    const response = yield call(api, `/api/users?${query}`, 'GET', token);
+    yield put(actions.setUsers(response));
+  } catch (error) {
+    yield put(actions.error(error));
+  }
+}
+
 function* saga() {
   yield all([
     takeLatest(actions.login.type, login),
+    takeLatest(actions.register.type, register),
     takeLatest(actions.logout.type, logout),
     takeLatest(actions.getCourses.type, getCourses),
     takeLatest(actions.createCourse.type, createCourse),
     takeLatest(actions.getCourse.type, getCourse),
     takeLatest(actions.getHomepage.type, getHomepage),
     takeLatest(actions.joinCourse.type, joinCourse),
+    takeLatest(actions.getUsers.type, getUsers),
   ]);
 }
 

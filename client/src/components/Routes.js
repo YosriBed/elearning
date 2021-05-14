@@ -19,6 +19,9 @@ const Onboarding = loadable(() => import('../containers/Onboarding'), {
 const Courses = loadable(() => import('../containers/Courses'), {
   fallback: <Loading />,
 });
+const Users = loadable(() => import('../containers/Users'), {
+  fallback: <Loading />,
+});
 
 const Routes = () => (
   <Router history={history}>
@@ -30,7 +33,12 @@ const Routes = () => (
         <RestrictedRoute
           path="/courses"
           component={Courses}
-          requiredRoles={['teacher', 'student']}
+          requiredRoles={['teacher', 'student', 'admin']}
+        />
+        <RestrictedRoute
+          path="/users"
+          component={Users}
+          requiredRoles={['admin']}
         />
         <Route path="*" component={Home} />
       </Switch>
