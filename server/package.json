@@ -1,7 +1,12 @@
 {
-  "name": "elearning-server",
-  "version": "1.0.0",
+  "name": "elearning-api",
   "description": "Api server for the elearning web app",
+  "author": {
+    "email": "yosri_pro@outlook.fr",
+    "name": "Yosri Bedoui",
+    "url": "https://github.com/yosarouto"
+  },
+  "version": "1.0.0",
   "main": "index.js",
   "engines": {
     "node": ">=12.0.0"
@@ -54,6 +59,5 @@
     "mongoose",
     "express"
   ],
-  "author": "Yosri Bedoui",
   "license": "ISC"
 }
